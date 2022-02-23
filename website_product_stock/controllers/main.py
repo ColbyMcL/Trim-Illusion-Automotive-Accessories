@@ -171,8 +171,8 @@ class WebsiteSaleStock(http.Controller):
             if attrib_list:
                 post['attrib'] = attrib_list
 
-            Product = request.env['product.product'].with_context(bin_size=True)
-            search_product = Product.search(domain, order=self._get_search_order(post))
+            Product = request.env['product.product'].sudo().with_context(bin_size=True)
+            search_product = Product.sudo().search(domain, order=self._get_search_order(post))
             website_domain = request.website.website_domain()
             categs_domain = [('parent_id', '=', False)] + website_domain
             # if search:
