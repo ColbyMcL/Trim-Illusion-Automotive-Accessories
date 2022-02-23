@@ -74,7 +74,7 @@
             <div class="card-body p-1" style="height: 280px;">
                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
                 <a  class="d-block h-100" itemprop="url" t-attf-href="/shop/stock/{{product.id}}">
-                    <span t-field="product.image_1920"
+                    <span t-field="product.sudo().image_1920"
                             t-options="{'widget': 'image', 'preview_image': 'image_1024' if product_image_big else 'image_256', 'itemprop': 'image'}"
                           class="d-flex h-100 justify-content-center align-items-center" style="object-fit: contain"/>
                 </a>
@@ -147,7 +147,7 @@
                                     <th>Incoming</th>
                                     <th>Available Quantity</th>
                                 </tr>
-                                <t t-set="warehouse_data" t-value="product.product_qty_get()"/>
+                                <t t-set="warehouse_data" t-value="product.sudo().product_qty_get()"/>
                                 <t t-foreach="warehouse_data" t-as="warehouse">
                                     <tr class="text-center">
                                         <td><t t-esc="warehouse.get('warehouse_name')"/></td>

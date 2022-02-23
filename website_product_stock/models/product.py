@@ -7,9 +7,9 @@ class ProductProduct(models.Model):
 
     def product_qty_get(self):
         warehouse_line = []
-        for warehouse_id in self.env['stock.warehouse'].search([]):
+        for warehouse_id in self.env['stock.warehouse'].sudo().search([]):
             ctx = {'warehouse': warehouse_id.id, 'product_id': self}
-            stock = self.with_context(ctx)._compute_quantities_dict(
+            stock = self.with_context(ctx).sudo()._compute_quantities_dict(
                 lot_id=False, owner_id=False, package_id=False,
                 from_date=False, to_date=False)
             if stock:
