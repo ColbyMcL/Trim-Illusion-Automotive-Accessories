@@ -23,6 +23,6 @@ class ProductProduct(models.Model):
                     'outgoing_qty': stock.get(self.id).get(
                         'outgoing_qty'),
                     'forecasted_qty': stock.get(self.id).get(
-                        'virtual_available')
+                        'free_qty')
                 })
         return warehouse_line

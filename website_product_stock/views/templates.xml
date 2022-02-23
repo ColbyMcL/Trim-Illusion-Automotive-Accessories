@@ -143,17 +143,17 @@
                             <table class="table table-striped">
                                 <tr class="text-center">
                                     <th>Warehouse</th>
-                                    <th>Available Quantity</th>
                                     <th>On-hand</th>
                                     <th>Incoming</th>
+                                    <th>Available Quantity</th>
                                 </tr>
                                 <t t-set="warehouse_data" t-value="product.product_qty_get()"/>
                                 <t t-foreach="warehouse_data" t-as="warehouse">
                                     <tr class="text-center">
                                         <td><t t-esc="warehouse.get('warehouse_name')"/></td>
-                                        <td><t t-esc="warehouse.get('forecasted_qty')"/></td>
                                         <td><t t-esc="warehouse.get('qty')"/></td>
                                         <td><t t-esc="warehouse.get('incoming_qty')"/></td>
+                                        <td><t t-esc="warehouse.get('forecasted_qty')"/></td>
                                     </tr>
                                 </t>
                             </table>
