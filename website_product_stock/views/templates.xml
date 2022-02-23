@@ -1,0 +1,166 @@
+<odoo>
+
+    <template id="website_sale_products_search_box_stock" inherit_id="website.website_search_box" primary="True">
+        <xpath expr="//div[@role='search']" position="replace">
+            <form t-attf-class="o_wsale_products_searchbar_form_stock mt-2 o_wait_lazy_js #{_classes}" t-att-action="action if action else '/shop/stock'" method="get" t-att-data-snippet="_snippet">
+                <t>$0</t>
+                <input name="order" type="hidden" class="o_wsale_search_order_by" value=""/>
+                <t t-raw="0"/>
+            </form>
+        </xpath>
+    </template>
+
+    <template id="stock_product" name="Products">
+        <t t-call="website.layout">
+            <t t-set="additional_title">Product Stock</t>
+            <div id="wrap" class="js_sale">
+                <div class="oe_structure oe_empty" id="oe_structure_website_sale_products_1"/>
+                <div class="container oe_website_sale">
+                    <div class="products_pager form-inline flex-md-nowrap justify-content-between justify-content-md-center">
+                        <t t-call="website_product_stock.website_sale_products_search_box_stock"/>
+                        <t t-call="portal.pager">
+                            <t t-set="_classes" t-valuef="mt-2 ml-md-2"/>
+                        </t>
+                    </div>
+                    <div class="row o_wsale_products_main_row">
+                        <div t-if="enable_left_column" id="products_grid_before" class="col-lg-3"/>
+                        <div class="o_wsale_products_grid_table_wrapper">
+                            <div id="products_grid" t-attf-class="col #{'o_wsale_layout_list' if layout_mode == 'list' else ''}">
+                            <div>
+
+                            </div>
+                            <t t-if="products" class="o_wsale_products_grid_table_wrapper">
+                                <table class="table table-borderless m-0" t-att-data-ppg="ppg" t-att-data-ppr="ppr">
+                                    <colgroup t-ignore="true">
+                                        <col t-foreach="ppr" t-as="p"/>
+                                    </colgroup>
+                                    <tbody>
+                                        <tr t-foreach="bins" t-as="tr_product">
+                                            <div class="row">
+                                                <t t-foreach="tr_product" t-as="td_product">
+                                                    <t t-if="td_product">
+                                                        <t t-set="product" t-value="td_product['product']" />
+                                                        <td t-attf-class="oe_product col-3">
+                                                                <div t-attf-class="o_wsale_product_grid_wrapper o_wsale_product_grid_wrapper_my" style=";position: relative;">
+                                                                    <t t-call="website_product_stock.products_item">
+                                                                    </t>
+                                                                </div>
+                                                            </td>
+                                                    </t>
+
+                                                    <td t-else=""/>
+                                                </t>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+                        </div>
+                        </div>
+
+                    </div>
+                    <div class="products_pager form-inline justify-content-center py-3">
+                        <t t-call="portal.pager"/>
+                    </div>
+                </div>
+                <div class="oe_structure oe_empty" id="oe_structure_website_sale_products_2"/>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="products_item" name="Products item">
+        <div  class="card oe_product_cart">
+            <div class="card-body p-1" style="height: 280px;">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                <a  class="d-block h-100" itemprop="url" t-attf-href="/shop/stock/{{product.id}}">
+                    <span t-field="product.image_1920"
+                            t-options="{'widget': 'image', 'preview_image': 'image_1024' if product_image_big else 'image_256', 'itemprop': 'image'}"
+                          class="d-flex h-100 justify-content-center align-items-center" style="object-fit: contain"/>
+                </a>
+            </div>
+            <div class="card-body p-0 text-center o_wsale_product_information" style="background: lightgray !important;">
+                <div class="p-2 o_wsale_product_information_text">
+                    <h6 class="o_wsale_products_item_title" style="height:105px">
+                        <a itemprop="name" t-att-href="product_href" t-att-content="product.display_name" t-field="product.display_name" />
+                    </h6>
+                    <h6>
+                        <a role="button"  t-attf-href="/shop/stock/{{product.id}}" id="view_stock" class="btn btn-primary btn-md mt16 view_stock d-block d-sm-inline-block btn-block" href="#"><i class=""/> View Stock</a>
+                    </h6>
+                </div>
+                <div class="o_wsale_product_btn"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="product" name="Product" track="1">
+        <t t-call="website.layout">
+            <t t-set="additional_title" t-value="product.name" />
+            <div itemscope="itemscope" id="wrap" class="js_sale">
+                <section t-attf-class="container py-2 oe_website_sale" id="product_detail" t-att-data-view-track="view_track and '1' or '0'">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a t-att-href="keep(category=0)">Products</a>
+                                </li>
+                                <li t-if="category" class="breadcrumb-item">
+                                    <a t-att-href="keep('/shop/stock/category/%s' % slug(category), category=0)" t-field="category.name" />
+                                </li>
+                                <li class="breadcrumb-item active">
+                                    <span t-field="product.name" />
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-inline justify-content-end">
+                                <t t-call="website_product_stock.website_sale_products_search_box_stock"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xl-8">
+                            <span t-field="product.image_1920"
+                                  t-options="{'widget': 'image', 'preview_image': 'image_1024' if product_image_big else 'image_256', 'itemprop': 'image'}"
+                                  class="d-flex h-100 justify-content-center align-items-center" style="object-fit: contain"/>
+                        </div>
+                        <div class="col-md-6 col-xl-4" id="product_details">
+                            <div t-if="product">
+                                <h1 itemprop="name" t-field="product.name">Product Name</h1>
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                <hr />
+                                <h5 t-field="product.default_code"/>
+                                <hr />
+                                <div class="js_product js_main_product">
+                                    <t t-placeholder="select">
+                                        <input type="hidden" class="product_template_id" name="product_template_id" t-att-value="product.id" />
+                                    </t>
+                                    <div id="product_option_block"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xl-12" id="product_stock_detail">
+                            <table class="table table-striped">
+                                <tr class="text-center">
+                                    <th>Warehouse</th>
+                                    <th>On-hand</th>
+                                    <th>Incoming</th>
+                                    <th>Available Quantity</th>
+                                </tr>
+                                <t t-set="warehouse_data" t-value="product.product_qty_get()"/>
+                                <t t-foreach="warehouse_data" t-as="warehouse">
+                                    <tr class="text-center">
+                                        <td><t t-esc="warehouse.get('warehouse_name')"/></td>
+                                        <td><t t-esc="warehouse.get('qty')"/></td>
+                                        <td><t t-esc="warehouse.get('incoming_qty')"/></td>
+                                        <td><t t-esc="warehouse.get('forecasted_qty')"/></td>
+                                    </tr>
+                                </t>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+</odoo>
