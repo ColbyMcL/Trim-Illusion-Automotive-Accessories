@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template inherit_id="sale.report_saleorder_document" id="inherit_sale_report_add_section_total">
+            <xpath expr="//table[hasclass('o_main_table')]" position="replace">
+                <table class="table table-sm o_main_table">
+                <!-- In case we want to repeat the header, remove "display: table-row-group" -->
+                <thead style="display: table-row-group">
+                    <tr>
+                        <th name="th_description" class="text-left">Description</th>
+                        <th name="th_subtotal" class="text-right">
+                            <span>Amount</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="sale_tbody">
+                    <t t-set="section_data" t-value="doc.get_section_data()"/>
+                    <t t-foreach="section_data" t-as="sec">
+                        <tr>
+                            <td name="td_name"><span t-esc="sec"/></td>
+                            <td name="td_subtotal" class="text-right o_price_total">
+                                <span t-esc="doc.currency_id.symbol"/>
+                                <span t-esc="'%.2f'% section_data.get(sec)"/>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            </xpath>
+        </template>
+
+    </data>
+</odoo>
