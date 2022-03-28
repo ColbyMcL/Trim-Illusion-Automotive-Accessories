@@ -11,6 +11,8 @@
     "data": [
         'data/menu_data.xml',
         'views/templates.xml',
+        'report/sale_order.xml',
+        'report/invoice.xml'
     ],
     'qweb': [],
     'installable': True,

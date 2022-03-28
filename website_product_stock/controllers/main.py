@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from werkzeug.exceptions import Forbidden, NotFound
 import logging
